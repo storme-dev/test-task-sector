@@ -1,3 +1,5 @@
+const UserModel = require('./model');
+
 class UserService {
 
 
