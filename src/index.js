@@ -1,12 +1,19 @@
 const express = require('express');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 const sequelize = require('./db');
 const errorMiddleware = require('./middlewares/error');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use('/static', express.static('static'));
+app.use(fileUpload({
+    uploadTimeout: 30000,
+    limits: { fileSize: 5 * 1024 * 1024 },
+}));
+global.appRootPath = path.resolve(__dirname, '..');
 
 const apiRouter = require('./api');
 app.use('/api', apiRouter);

@@ -1,6 +1,7 @@
 const UserService = require('./service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../../exceptions/ApiError');
+const path = require('path');
 
 class UserController {
     async register(req, res, next) {
@@ -49,6 +50,44 @@ class UserController {
         } catch (e) {
             next(e);
         }
+    }
+
+    async uploadPhoto(req, res, next) {
+        res.send(`
+        <form ref='uploadForm' 
+            id='uploadForm' 
+            action='/api/user/upload' 
+            method='post' 
+            encType="multipart/form-data"
+        >
+            <input type="file" name="sampleFile" />
+            <input type='submit' value='Upload!' />
+        </form> 
+       `);
+    }
+
+    async upload(req, res, next) {
+        try {
+            const userId = 1;
+            const file = req.files.sampleFile;
+
+            if (file.mimetype.indexOf('image') === -1) {
+                throw ApiError.BadRequest('Файл должен являться изображением!')
+            }
+
+            if (file.size > 3 * 1024 * 1024) {
+                throw ApiError.BadRequest('Размер файла не более 3 МБ!');
+            }
+
+            file.mv(appRootPath + '/static/photos/' + userId.toString() + path.extname(file.name), (err) => {
+                if (err) next(err);
+                res.send({ ok: true });
+            });
+
+        } catch (e) {
+            next(e);
+        }
+
     }
 }
 

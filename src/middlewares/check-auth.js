@@ -9,6 +9,9 @@ module.exports = function (req, res, next) {
         }
 
         const accessToken = authorizationHeader.split(' ')[1];
+
+        //console.log(accessToken);
+
         if (!accessToken) {
             return next(ApiError.Unauthorized());
         }

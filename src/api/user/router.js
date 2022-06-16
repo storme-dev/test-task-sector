@@ -4,15 +4,13 @@ const userRouter = express.Router();
 const userController = require('./controller');
 const checkAuth = require('../../middlewares/check-auth');
 
-userRouter.get('/', (req, res) => {
-    res.send('Hello');
-})
-
 userRouter.post('/register',
     body('email').isEmail(),
     body('password').isLength({min: 3, max: 32}),
     userController.register
 );
 userRouter.post('/login', userController.login);
+userRouter.get('/uploadPhoto', userController.uploadPhoto);
+userRouter.post('/upload', userController.upload);
 
 module.exports = userRouter;

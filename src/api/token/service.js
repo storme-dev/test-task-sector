@@ -4,8 +4,8 @@ const JWT_CONFIG = require('../../../config').jwt;
 
 class TokenService {
     generate(payload) {
-        const accessToken = jwt.sign(payload, JWT_CONFIG.JWT_ACCESS_SECRET, {expiresIn: '15s'})
-        const refreshToken = jwt.sign(payload, JWT_CONFIG.JWT_REFRESH_SECRET, {expiresIn: '30s'})
+        const accessToken = jwt.sign(payload, JWT_CONFIG.JWT_ACCESS_SECRET, {expiresIn: '15m'})
+        const refreshToken = jwt.sign(payload, JWT_CONFIG.JWT_REFRESH_SECRET, {expiresIn: '30h'})
 
         return {
             accessToken,
